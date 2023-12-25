@@ -49,6 +49,8 @@ export WEBSERVER_ADDRESS=<your webserver address>
 
 #### Windows
 
+Not yet built. You can build it yourself. Note that `CGO_ENABLED=1` is required to build it.
+
 ```
 set TELEGRAM_TOKEN=<your token>
 set RF2_SERVERS=<your rf2 servers>
