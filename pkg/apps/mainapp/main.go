@@ -92,9 +92,9 @@ func (m *MainApp) AcceptButton(button string) (bool, func(ctx context.Context, c
 
 func (m *MainApp) renderStart() func(ctx context.Context, chatId int64) error {
 	return func(ctx context.Context, chatId int64) error {
-		message := "Hola, soy el bot de F1Champs que permite ver las Hotlaps registradas y sesiones en curso.\n\n"
-		message += "Puedes usar el siguiente comando:\n\n"
-		message += fmt.Sprintf("%s - Muestra el menú del bot\n", menuMenu)
+		message := "Hello, I am a bot that allows you to get information about ongoing sessions.\n\n"
+		message += "You can use the following command:\n\n"
+		message += fmt.Sprintf("%s - Show the bot menu\n", menuMenu)
 		msg := tgbotapi.NewMessage(chatId, message)
 		msg.ReplyMarkup = menuKeyboard
 		_, err := m.bot.Send(msg)
@@ -104,7 +104,7 @@ func (m *MainApp) renderStart() func(ctx context.Context, chatId int64) error {
 
 func (m *MainApp) renderMenu() func(ctx context.Context, chatId int64) error {
 	return func(ctx context.Context, chatId int64) error {
-		message := "Menú del bot.\n\n"
+		message := "Bot menu.\n\n"
 		msg := tgbotapi.NewMessage(chatId, message)
 		msg.ReplyMarkup = menuKeyboard
 		_, err := m.bot.Send(msg)

@@ -6,8 +6,8 @@ Telegram Bot for accessing data from live session in rFactor2 servers.
 
 - Multiple servers
 - See servers status
-- Pushes notifications when a new session starts with at least one driver
 - See current session data/standings
+- Pushes notifications when a new session starts with at least one driver
 - LiveMap
 - Generate the track map for the current session
 - Fetch the car image for drivers in current session
@@ -15,6 +15,14 @@ Telegram Bot for accessing data from live session in rFactor2 servers.
 ## Usage
 
 Follow instructions in [Telegram Bot Father](https://core.telegram.org/bots#6-botfather) to create a new bot.
+
+When creating the bot, it is recommended to add the next commands
+(via /setcommands)[https://core.telegram.org/bots/features#edit-bots] to the bot:
+
+```
+start - Give a welcome message
+menu - Show the bot menu
+```
 
 Go to the [releases](https://github.com/oscar-martin/rfactor2telegrambot/releases) and download the binary for your platform.
 
@@ -70,11 +78,10 @@ export WEBSERVER_ADDRESS=:8080
 With the previous configuration, the bot will send the livemap data as a link to `http://192.168.1.12:8080` and your
 Telegram client will be able to access it if you are in the same LAN.
 
-## Miscelaneous
+## Miscellaneous
 
 - The bot will create a file called `livetiming-bot.db` that will contain the ID of users that have subscribed to
   notifications. This file is created in the same directory where the bot is running. This file should not be deleted
   unless you want to lose the subscriptions.
 - The bot will create a folder called `resources` to cache the files for the cars and trackmaps that are
   downloaded/generated from the rFactor2 servers. The content of this folder can be deleted at any time.
-

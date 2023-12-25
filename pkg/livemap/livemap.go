@@ -195,10 +195,10 @@ type Data struct {
 func (lm *LiveMap) livemapHandler(serverId string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !lm.sessionRunning {
-			fmt.Fprintf(w, "No hay sesiones activas")
+			fmt.Fprintf(w, "No sessions running")
 			return
 		} else if lm.svgTrackResource.IsZero() {
-			fmt.Fprintf(w, "No se ha creado aún el mapa del trazado")
+			fmt.Fprintf(w, "The track map is not yet available")
 			return
 		}
 		e := Data{

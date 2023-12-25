@@ -110,7 +110,6 @@ func (s *Server) dispatchMessage(ctx context.Context, messageChan <-chan Message
 					log.Printf("Error unmarshalling standingsHistory: %s\n", err.Error())
 					continue
 				}
-				// fmt.Printf("!!!!!!updating live standing history timing!!!!!! %d\n", len(body))
 				s.LiveStandingHistoryChan <- s.fromMessageToLiveStandingHistoryData(s.Name, s.ID, &shdd)
 			} else if m.MessageType == mtStandings {
 				sdd := []model.StandingDriverData{}
@@ -134,7 +133,6 @@ func (s *Server) dispatchMessage(ctx context.Context, messageChan <-chan Message
 					s.FirstDriverEnteredChan <- s.SessionStarted
 				}
 
-				// fmt.Printf("!!!!!!updating live timing!!!!!! %d\n", len(body))
 				lsd, cp := s.fromMessageToLiveStandingData(s.Name, s.ID, sdd)
 				s.LiveStandingChan <- lsd
 				s.CarsPositionChan <- cp
@@ -163,7 +161,6 @@ func (s *Server) dispatchMessage(ctx context.Context, messageChan <-chan Message
 					s.ServerStartedChan <- ss
 				}
 
-				// fmt.Print("!!!!!!updating sessionInfo!!!!!!\n")
 				s.LiveSessionInfoDataChan <- s.fromMessageToLiveSessionInfoData(s.Name, s.ID, &si)
 			}
 		}

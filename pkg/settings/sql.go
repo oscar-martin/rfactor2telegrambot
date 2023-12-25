@@ -89,8 +89,6 @@ func buildUpdateUserCommand(userID, chatID string, n Notifications) string {
 	race := n.RaceEnabledInt()
 
 	fields := "userid, name, chatid, testday, practice, qual, warnup, race"
-	// columns := fmt.Sprintf(`testday = %d, practice = %d, qual = %d, warnup = %d, race = %d`, testday, practice, qual, warnup, race)
 	values := fmt.Sprintf(`'%s', '%s', '%s', %d, %d, %d, %d, %d`, userID, userID, chatID, testday, practice, qual, warnup, race)
-	// return fmt.Sprintf(`UPDATE notifications SET %s WHERE id = '%s'`, columns, userID)
 	return fmt.Sprintf(`INSERT OR REPLACE INTO notifications (%s) VALUES (%s)`, fields, values)
 }

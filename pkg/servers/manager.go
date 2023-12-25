@@ -16,7 +16,6 @@ import (
 )
 
 var (
-	MenuLive   = "/directo"
 	ButtonLive = "Live"
 )
 

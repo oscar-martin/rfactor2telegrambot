@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	buttonStint           = "Tanda"
-	buttonGrid            = "Parrilla"
+	buttonStint           = "Sting"
+	buttonGrid            = "Grid"
 	buttonInfo            = "Info"
 	subcommandShowLiveMap = "show_live_map"
 )
@@ -144,28 +144,28 @@ func (sa *ServerApp) AcceptButton(button string) (bool, func(ctx context.Context
 		sanitizeServerName(button) == buttonInfo+" "+sa.liveSessionInfoData.ServerName {
 		return true, func(ctx context.Context, chatId int64) error {
 			if !sa.liveSessionInfoData.SessionInfo.WebSocketRunning {
-				msg := tgbotapi.NewMessage(chatId, fmt.Sprintf("El servidor %s está apagado", sa.liveSessionInfoData.ServerName))
+				msg := tgbotapi.NewMessage(chatId, fmt.Sprintf("Server %s is offline", sa.liveSessionInfoData.ServerName))
 				msg.ReplyMarkup = sa.appMenu.PrevMenu()
 				_, err := sa.bot.Send(msg)
 				return err
 			} else if !sa.liveSessionInfoData.SessionInfo.ReceivingData {
-				msg := tgbotapi.NewMessage(chatId, fmt.Sprintf("No se reciben datos de server %s", sa.liveSessionInfoData.ServerName))
+				msg := tgbotapi.NewMessage(chatId, fmt.Sprintf("No data received from server %s", sa.liveSessionInfoData.ServerName))
 				msg.ReplyMarkup = sa.appMenu.PrevMenu()
 				_, err := sa.bot.Send(msg)
 				return err
 			}
 			si := sa.liveSessionInfoData.SessionInfo
-			laps := "No Limitado"
+			laps := "Not Limited"
 			if si.MaximumLaps < 100 {
 				laps = fmt.Sprintf("%d", si.MaximumLaps)
 			}
 			text := fmt.Sprintf(`%s:
-			‣ Circuito: %s (%0.fm)
-			‣ Tiempo restante: %s
-			‣ Sesión: %s (Vueltas: %s)
-			‣ Coches: %d
-			‣ Lluvia: %.1f%% (min: %.1f%%. max: %.1f%%)
-			‣ Temperatura (Pista/Ambiente): %0.fºC/%0.fºC
+			‣ Track: %s (%0.fm)
+			‣ Time left: %s
+			‣ Session: %s (Laps: %s)
+			‣ Cars in session: %d
+			‣ Rain: %.1f%% (min: %.1f%%. max: %.1f%%)
+			‣ Temperature (Track/Ambient): %0.fºC/%0.fºC
 			`,
 				sa.liveSessionInfoData.ServerName,
 				si.TrackName,

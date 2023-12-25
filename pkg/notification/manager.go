@@ -93,7 +93,7 @@ func (m *Manager) sendNotification(tusers []settings.TelegramUser, newSession mo
 	}
 
 	n := notify.NewWithServices(tg)
-	err := n.Send(m.ctx, "Nueva sesión iniciada:", newSession.String())
+	err := n.Send(m.ctx, "New session started:", newSession.String())
 	if err != nil {
 		return err
 	}

@@ -179,7 +179,6 @@ func createServers(rf2Servers, domain string) ([]servers.Server, error) {
 }
 
 func receiveUpdates(ctx context.Context, updates tgbotapi.UpdatesChannel) {
-	// `for {` means the loop is infinite until we manually stop it
 	for {
 		select {
 		// stop looping if ctx is cancelled
@@ -230,7 +229,7 @@ func MessageHandler(ctx context.Context, message *tgbotapi.Message) {
 	}
 
 	// Print to console
-	log.Printf("%s wrote %s", user.FirstName, text)
+	// log.Printf("%s wrote %s", user.FirstName, text)
 
 	var err error
 	if message.IsCommand() {

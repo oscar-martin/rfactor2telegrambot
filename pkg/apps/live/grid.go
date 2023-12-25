@@ -18,7 +18,7 @@ import (
 
 const (
 	subcommandShowLiveTiming = "show_live_timing"
-	tableDriver              = "PIL"
+	tableDriver              = "DRI"
 )
 
 type GridApp struct {
@@ -130,15 +130,15 @@ func (ga *GridApp) sendSessionData(chatId int64, messageId *int, driversSession 
 
 		switch infoType {
 		case inlineKeyboardStatus:
-			t.AppendHeader(table.Row{tableDriver, "Sectores", "S" /*, "FUEL"*/})
+			t.AppendHeader(table.Row{tableDriver, "Sectors", "S" /*, "FUEL"*/})
 		case inlineKeyboardInfo:
-			t.AppendHeader(table.Row{tableDriver, "Nombre" /*, "Núm"*/, "Lap"})
+			t.AppendHeader(table.Row{tableDriver, "Name" /*, "Núm"*/, "Lap"})
 		case inlineKeyboardLastLap:
-			t.AppendHeader(table.Row{tableDriver, "Última", "Mejor"})
+			t.AppendHeader(table.Row{tableDriver, "Last", "Best"})
 		case inlineKeyboardOptimumLap:
-			t.AppendHeader(table.Row{tableDriver, "Óptimo", "Mejor"})
+			t.AppendHeader(table.Row{tableDriver, "Optimal", "Best"})
 		case inlineKeyboardBestLap:
-			t.AppendHeader(table.Row{tableDriver, "Mejor", "Top Speed"})
+			t.AppendHeader(table.Row{tableDriver, "Best", "Top Speed"})
 		default:
 			t.AppendHeader(table.Row{tableDriver, infoType})
 		}
@@ -285,7 +285,7 @@ func (ga *GridApp) sendSessionData(chatId int64, messageId *int, driversSession 
 		keyboard := getGridInlineKeyboard(driversSession.ServerID, fmt.Sprintf("%s%s/live", ga.liveSessionInfoData.SessionInfo.LiveMapDomain, ga.liveSessionInfoData.SessionInfo.LiveMapPath))
 		var cfg tgbotapi.Chattable
 		remainingTime := helper.SecondsToHoursAndMinutes(ga.liveSessionInfoData.SessionInfo.EndEventTime - ga.liveSessionInfoData.SessionInfo.CurrentEventTime)
-		text := fmt.Sprintf("```\nTiempo restante: %s\nServer: %q\n\n%s```", remainingTime, driversSession.ServerName, b.String())
+		text := fmt.Sprintf("```\nTime left: %s\nServer: %q\n\n%s```", remainingTime, driversSession.ServerName, b.String())
 		if messageId == nil {
 			msg := tgbotapi.NewMessage(chatId, text)
 			msg.ParseMode = tgbotapi.ModeMarkdownV2
@@ -300,7 +300,7 @@ func (ga *GridApp) sendSessionData(chatId int64, messageId *int, driversSession 
 		_, err := ga.bot.Send(cfg)
 		return err
 	} else {
-		message := "No hay pilotos en la sesión"
+		message := "There are no drivers in the session"
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := ga.bot.Send(msg)
 		return err

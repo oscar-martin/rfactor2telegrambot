@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	buttonBackTo = "Volver a"
+	buttonBackTo = "Back to"
 )
 
 type Menuer interface {

@@ -122,7 +122,7 @@ func (sa *StintApp) renderDrivers() func(ctx context.Context, chatId int64) erro
 				return err
 			}
 		} else {
-			message := "No hay pilotos en la sesión"
+			message := "There are no drivers in the session"
 			msg := tgbotapi.NewMessage(chatId, message)
 			_, err := sa.bot.Send(msg)
 			return err
@@ -141,7 +141,7 @@ func (sa *StintApp) handleStintDataCallbackQuery(chatId int64, messageId *int, d
 			log.Printf("An error occured: %s", err.Error())
 		}
 	} else {
-		message := fmt.Sprintf("No hay datos para el piloto %s", driver)
+		message := fmt.Sprintf("No data for driver %s", driver)
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := sa.bot.Send(msg)
 		return err
@@ -167,20 +167,20 @@ func (sa *StintApp) handleCarDataCallbackQuery(chatId int64, messageId *int, dri
 			}()
 			select {
 			case <-ctx.Done():
-				message := fmt.Sprintf("Expiró el tiempo de espera para la descarga de la imagen del coche de %s", driver)
+				message := fmt.Sprintf("The waiting time for downloading the car image for %s has expired", driver)
 				msg := tgbotapi.NewMessage(chatId, message)
 				_, err := sa.bot.Send(msg)
 				return err
 			case err := <-errChan:
-				message := fmt.Sprintf("No se pudo leer la imagen del coche de %s", driver)
+				message := fmt.Sprintf("Could not read the image of the car %s", driver)
 				msg := tgbotapi.NewMessage(chatId, message)
 				_, err = sa.bot.Send(msg)
 				return err
 			case carTh := <-carThChan:
 				filePath := carTh.FilePath()
-				text := fmt.Sprintf(`‣ Coche: %s
-‣ Clase: %s
-‣ Piloto: %s`,
+				text := fmt.Sprintf(`‣ Car: %s
+‣ Class: %s
+‣ Driver: %s`,
 					driverData[0].VehicleName,
 					driverData[0].CarClass,
 					driverData[0].DriverName)
@@ -190,13 +190,13 @@ func (sa *StintApp) handleCarDataCallbackQuery(chatId int64, messageId *int, dri
 				return err
 			}
 		} else {
-			message := fmt.Sprintf("No hay datos para el piloto %s", driver)
+			message := fmt.Sprintf("No data for driver %s", driver)
 			msg := tgbotapi.NewMessage(chatId, message)
 			_, err := sa.bot.Send(msg)
 			return err
 		}
 	} else {
-		message := fmt.Sprintf("No hay datos para el piloto %s", driver)
+		message := fmt.Sprintf("No data for driver %s", driver)
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := sa.bot.Send(msg)
 		return err
@@ -253,7 +253,7 @@ func (sa *StintApp) sendStintData(chatId int64, messageId *int, driverData []mod
 		keyboard := getStintInlineKeyboard(driverName, serverId)
 		var cfg tgbotapi.Chattable
 		remainingTime := helper.SecondsToHoursAndMinutes(sa.liveSessionInfoData.SessionInfo.EndEventTime - sa.liveSessionInfoData.SessionInfo.CurrentEventTime)
-		text := fmt.Sprintf("```\nTiempo restante: %s\nDatos de %s en %q\n\n%s```", remainingTime, driverName, serverName, b.String())
+		text := fmt.Sprintf("```\nTime left: %s\nData for %s in %q\n\n%s```", remainingTime, driverName, serverName, b.String())
 		if messageId == nil {
 			msg := tgbotapi.NewMessage(chatId, text)
 			msg.ParseMode = tgbotapi.ModeMarkdownV2
@@ -268,7 +268,7 @@ func (sa *StintApp) sendStintData(chatId int64, messageId *int, driverData []mod
 		_, err := sa.bot.Send(cfg)
 		return err
 	} else {
-		message := "No hay vueltas en la sesión"
+		message := "There are no laps in the session"
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := sa.bot.Send(msg)
 		return err
@@ -314,7 +314,7 @@ func (sa *StintApp) driversTextMarkup() (text string, markup tgbotapi.InlineKeyb
 		}
 		buttons[len(buttons)-1] = append(buttons[len(buttons)-1], tgbotapi.NewInlineKeyboardButtonData(driver, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, sa.liveStandingHistoryData.ServerID, inlineKeyboardTimes, driver)))
 	}
-	text = "Elige el piloto de la lista:\n\n"
+	text = "Choose the driver from the list:\n\n"
 	markup = tgbotapi.NewInlineKeyboardMarkup(buttons...)
 	return
 }

@@ -16,7 +16,7 @@ import (
 
 const (
 	liveAppName    = "LiveTiming"
-	buttonSettings = "Ajustes"
+	buttonSettings = "Settings"
 )
 
 type LiveApp struct {

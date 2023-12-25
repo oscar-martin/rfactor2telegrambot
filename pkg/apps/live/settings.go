@@ -65,7 +65,7 @@ func (sa *SettingsApp) AcceptCallback(query *tgbotapi.CallbackQuery) (bool, func
 
 			chatCtxValue := ctx.Value(ChatContextKey)
 			if chatCtxValue == nil {
-				msg := tgbotapi.NewMessage(query.Message.Chat.ID, "No se pudo leer información del chat")
+				msg := tgbotapi.NewMessage(query.Message.Chat.ID, "Could not read chat information")
 				msg.ReplyMarkup = sa.appMenu.PrevMenu()
 				_, err := sa.bot.Send(msg)
 				return err
@@ -75,7 +75,7 @@ func (sa *SettingsApp) AcceptCallback(query *tgbotapi.CallbackQuery) (bool, func
 
 			err := sa.sm.ToggleNotificationForSessionStarted(userID, chatID, sessionType)
 			if err != nil {
-				msg := tgbotapi.NewMessage(query.Message.Chat.ID, "No se pudo cambiar el estado de la notificación")
+				msg := tgbotapi.NewMessage(query.Message.Chat.ID, "Could not change notification status")
 				msg.ReplyMarkup = sa.appMenu.PrevMenu()
 				_, err := sa.bot.Send(msg)
 				return err
@@ -108,7 +108,7 @@ func (sa *SettingsApp) renderNotifications(messageID *int) func(ctx context.Cont
 	return func(ctx context.Context, chatId int64) error {
 		userCtxValue := ctx.Value(UserContextKey)
 		if userCtxValue == nil {
-			msg := tgbotapi.NewMessage(chatId, "No se pudo leer el usuario")
+			msg := tgbotapi.NewMessage(chatId, "Could not read user")
 			msg.ReplyMarkup = sa.appMenu.PrevMenu()
 			_, err := sa.bot.Send(msg)
 			return err
@@ -118,19 +118,20 @@ func (sa *SettingsApp) renderNotifications(messageID *int) func(ctx context.Cont
 		notificationStatus, err := sa.sm.ListNotifications(userID)
 		if err != nil {
 			log.Println(err)
-			msg := tgbotapi.NewMessage(chatId, "No se pudieron leer los de notificaciones para el usuario")
+			msg := tgbotapi.NewMessage(chatId, "Could not read notifications for user")
 			msg.ReplyMarkup = sa.appMenu.PrevMenu()
 			_, err := sa.bot.Send(msg)
 			return err
 		}
 		keyboard := getSettingsInlineKeyboard(userID, notificationStatus)
+		text := "Notification status\n(Only notifies the first session)"
 		var cfg tgbotapi.Chattable
 		if messageID == nil {
-			msg := tgbotapi.NewMessage(chatId, "Estado de notificaciones\n(Solo notifica la primera sesión)")
+			msg := tgbotapi.NewMessage(chatId, text)
 			msg.ReplyMarkup = keyboard
 			cfg = msg
 		} else {
-			msg := tgbotapi.NewEditMessageText(chatId, *messageID, "Estado de notificaciones\n(Solo notifica la primera sesión)")
+			msg := tgbotapi.NewEditMessageText(chatId, *messageID, text)
 			msg.ReplyMarkup = &keyboard
 			cfg = msg
 		}

@@ -2,9 +2,7 @@ package settings
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
-	"strings"
 	"sync"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -101,16 +99,6 @@ func (n Notifications) RaceEnabledInt() int {
 		return 1
 	}
 	return 0
-}
-
-func (n Notifications) String() string {
-	status := []string{}
-	status = append(status, fmt.Sprintf("%s Notificación inicio de %q", symbolStatus(n[TestDay]), TestDay))
-	status = append(status, fmt.Sprintf("%s Notificación inicio de %q", symbolStatus(n[Practice]), Practice))
-	status = append(status, fmt.Sprintf("%s Notificación inicio de %q", symbolStatus(n[Qual]), Qual))
-	status = append(status, fmt.Sprintf("%s Notificación inicio de %q", symbolStatus(n[Warmup]), Warmup))
-	status = append(status, fmt.Sprintf("%s Notificación inicio de %q", symbolStatus(n[Race]), Race))
-	return strings.Join(status, "\n")
 }
 
 func symbolStatus(enabled bool) string {
