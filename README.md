@@ -17,7 +17,7 @@ Telegram Bot for accessing data from live session in rFactor2 servers.
 Follow instructions in [Telegram Bot Father](https://core.telegram.org/bots#6-botfather) to create a new bot.
 
 When creating the bot, it is recommended to add the next commands
-(via /setcommands)[https://core.telegram.org/bots/features#edit-bots] to the bot:
+[(via /setcommands)](https://core.telegram.org/bots/features#edit-bots) to the bot:
 
 ```
 start - Give a welcome message
