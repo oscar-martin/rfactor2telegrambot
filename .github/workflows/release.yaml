@@ -9,13 +9,27 @@ permissions:
     packages: write
 
 jobs:
-  releases-matrix:
+  linux-build:
     name: Release Go Binary
     runs-on: ubuntu-latest
     strategy:
       matrix:
         goos: [linux]
         goarch: [amd64, arm64]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: wangyoucao577/go-release-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+  windows-build:
+    name: Release Go Binary
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        goos: [windows]
+        goarch: [amd64]
     steps:
     - uses: actions/checkout@v3
     - uses: wangyoucao577/go-release-action@v1

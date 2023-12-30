@@ -49,13 +49,20 @@ export WEBSERVER_ADDRESS=<your webserver address>
 
 #### Windows
 
-Not yet built. You can build it yourself. Note that `CGO_ENABLED=1` is required to build it.
-
 ```
 set TELEGRAM_TOKEN=<your token>
 set RF2_SERVERS=<your rf2 servers>
 set LIVEMAP_DOMAIN=<your livemap domain>
 set WEBSERVER_ADDRESS=<your webserver address>
+rfactor2telegrambot.exe
+```
+
+With powershell:
+
+```
+$env:TELEGRAM_TOKEN = '<your token>'
+$env:RF2_SERVERS = '<your rf2 servers>'
+$env:LIVEMAP_DOMAIN = '<your livemap domain>'
 rfactor2telegrambot.exe
 ```
 
