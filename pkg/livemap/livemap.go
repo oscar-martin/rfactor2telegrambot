@@ -3,10 +3,6 @@ package livemap
 import (
 	"bufio"
 	"encoding/json"
-	"f1champshotlapsbot/pkg/layout"
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/pubsub"
-	"f1champshotlapsbot/pkg/resources"
 	"fmt"
 	"html/template"
 	"image"
@@ -14,6 +10,10 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"rfactor2telegrambot/pkg/layout"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/pubsub"
+	"rfactor2telegrambot/pkg/resources"
 	"sync"
 	"time"
 

@@ -2,15 +2,15 @@ package live
 
 import (
 	"context"
-	"f1champshotlapsbot/pkg/apps"
-	"f1champshotlapsbot/pkg/helper"
-	"f1champshotlapsbot/pkg/menus"
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/pubsub"
-	"f1champshotlapsbot/pkg/resources"
-	"f1champshotlapsbot/pkg/servers"
 	"fmt"
 	"log"
+	"rfactor2telegrambot/pkg/apps"
+	"rfactor2telegrambot/pkg/helper"
+	"rfactor2telegrambot/pkg/menus"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/pubsub"
+	"rfactor2telegrambot/pkg/resources"
+	"rfactor2telegrambot/pkg/servers"
 	"strings"
 	"sync"
 

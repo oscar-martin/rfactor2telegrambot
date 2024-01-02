@@ -3,11 +3,11 @@ package servers
 import (
 	"context"
 	"encoding/json"
-	"f1champshotlapsbot/pkg/helper"
-	"f1champshotlapsbot/pkg/model"
 	"log"
 	"math"
 	"net/url"
+	"rfactor2telegrambot/pkg/helper"
+	"rfactor2telegrambot/pkg/model"
 	"slices"
 	"sort"
 	"strings"

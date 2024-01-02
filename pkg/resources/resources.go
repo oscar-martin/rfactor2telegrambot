@@ -3,11 +3,11 @@ package resources
 import (
 	"context"
 	"encoding/json"
-	"f1champshotlapsbot/pkg/layout"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"rfactor2telegrambot/pkg/layout"
 )
 
 const (

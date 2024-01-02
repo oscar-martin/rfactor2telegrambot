@@ -1,12 +1,12 @@
 package servers
 
 import (
-	"f1champshotlapsbot/pkg/livemap"
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/pubsub"
-	"f1champshotlapsbot/pkg/resources"
 	"fmt"
 	"log"
+	"rfactor2telegrambot/pkg/livemap"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/pubsub"
+	"rfactor2telegrambot/pkg/resources"
 	"sync"
 )
 

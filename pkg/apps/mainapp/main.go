@@ -2,12 +2,12 @@ package mainapp
 
 import (
 	"context"
-	"f1champshotlapsbot/pkg/apps"
-	"f1champshotlapsbot/pkg/apps/live"
-	"f1champshotlapsbot/pkg/menus"
-	"f1champshotlapsbot/pkg/servers"
-	"f1champshotlapsbot/pkg/settings"
 	"fmt"
+	"rfactor2telegrambot/pkg/apps"
+	"rfactor2telegrambot/pkg/apps/live"
+	"rfactor2telegrambot/pkg/menus"
+	"rfactor2telegrambot/pkg/servers"
+	"rfactor2telegrambot/pkg/settings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/nicksnyder/go-i18n/v2/i18n"

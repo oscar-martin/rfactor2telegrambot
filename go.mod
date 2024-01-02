@@ -1,4 +1,4 @@
-module f1champshotlapsbot
+module rfactor2telegrambot
 
 go 1.21.3
 

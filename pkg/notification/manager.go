@@ -2,10 +2,10 @@ package notification
 
 import (
 	"context"
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/pubsub"
-	"f1champshotlapsbot/pkg/settings"
 	"log"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/pubsub"
+	"rfactor2telegrambot/pkg/settings"
 	"strconv"
 	"strings"
 

@@ -1,8 +1,8 @@
 package pubsub
 
 import (
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/resources"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/resources"
 )
 
 const (

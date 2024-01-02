@@ -2,13 +2,13 @@ package live
 
 import (
 	"context"
-	"f1champshotlapsbot/pkg/apps"
-	"f1champshotlapsbot/pkg/menus"
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/pubsub"
-	"f1champshotlapsbot/pkg/servers"
-	"f1champshotlapsbot/pkg/settings"
 	"fmt"
+	"rfactor2telegrambot/pkg/apps"
+	"rfactor2telegrambot/pkg/menus"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/pubsub"
+	"rfactor2telegrambot/pkg/servers"
+	"rfactor2telegrambot/pkg/settings"
 	"sync"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"

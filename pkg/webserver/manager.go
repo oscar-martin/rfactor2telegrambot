@@ -2,12 +2,12 @@ package webserver
 
 import (
 	"context"
-	"f1champshotlapsbot/pkg/resources"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"rfactor2telegrambot/pkg/resources"
 	"strings"
 	"time"
 

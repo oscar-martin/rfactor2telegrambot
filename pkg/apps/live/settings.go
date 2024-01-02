@@ -2,10 +2,10 @@ package live
 
 import (
 	"context"
-	"f1champshotlapsbot/pkg/menus"
-	"f1champshotlapsbot/pkg/settings"
 	"fmt"
 	"log"
+	"rfactor2telegrambot/pkg/menus"
+	"rfactor2telegrambot/pkg/settings"
 	"strings"
 	"sync"
 

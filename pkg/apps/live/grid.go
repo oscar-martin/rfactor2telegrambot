@@ -3,12 +3,12 @@ package live
 import (
 	"bytes"
 	"context"
-	"f1champshotlapsbot/pkg/helper"
-	"f1champshotlapsbot/pkg/menus"
-	"f1champshotlapsbot/pkg/model"
-	"f1champshotlapsbot/pkg/pubsub"
 	"fmt"
 	"log"
+	"rfactor2telegrambot/pkg/helper"
+	"rfactor2telegrambot/pkg/menus"
+	"rfactor2telegrambot/pkg/model"
+	"rfactor2telegrambot/pkg/pubsub"
 	"strings"
 	"sync"
 
