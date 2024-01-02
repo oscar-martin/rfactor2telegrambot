@@ -1,4 +1,4 @@
-module rfactor2telegrambot
+module github.com/oscar-martin/rfactor2telegrambot
 
 go 1.21.3
 

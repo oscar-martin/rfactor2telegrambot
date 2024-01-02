@@ -3,11 +3,12 @@ package mainapp
 import (
 	"context"
 	"fmt"
-	"rfactor2telegrambot/pkg/apps"
-	"rfactor2telegrambot/pkg/apps/live"
-	"rfactor2telegrambot/pkg/menus"
-	"rfactor2telegrambot/pkg/servers"
-	"rfactor2telegrambot/pkg/settings"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/apps"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/apps/live"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/menus"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/servers"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/settings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/nicksnyder/go-i18n/v2/i18n"

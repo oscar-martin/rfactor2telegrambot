@@ -3,11 +3,12 @@ package notification
 import (
 	"context"
 	"log"
-	"rfactor2telegrambot/pkg/model"
-	"rfactor2telegrambot/pkg/pubsub"
-	"rfactor2telegrambot/pkg/settings"
 	"strconv"
 	"strings"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/model"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/pubsub"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/settings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/nicksnyder/go-i18n/v2/i18n"

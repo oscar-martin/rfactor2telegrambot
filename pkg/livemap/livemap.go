@@ -10,12 +10,13 @@ import (
 	"math"
 	"net/http"
 	"os"
-	"rfactor2telegrambot/pkg/layout"
-	"rfactor2telegrambot/pkg/model"
-	"rfactor2telegrambot/pkg/pubsub"
-	"rfactor2telegrambot/pkg/resources"
 	"sync"
 	"time"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/layout"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/model"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/pubsub"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/resources"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"

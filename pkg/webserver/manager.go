@@ -7,9 +7,10 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"rfactor2telegrambot/pkg/resources"
 	"strings"
 	"time"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/resources"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"

@@ -3,11 +3,12 @@ package servers
 import (
 	"fmt"
 	"log"
-	"rfactor2telegrambot/pkg/livemap"
-	"rfactor2telegrambot/pkg/model"
-	"rfactor2telegrambot/pkg/pubsub"
-	"rfactor2telegrambot/pkg/resources"
 	"sync"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/livemap"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/model"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/pubsub"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/resources"
 )
 
 const (

@@ -3,13 +3,14 @@ package live
 import (
 	"context"
 	"fmt"
-	"rfactor2telegrambot/pkg/apps"
-	"rfactor2telegrambot/pkg/menus"
-	"rfactor2telegrambot/pkg/model"
-	"rfactor2telegrambot/pkg/pubsub"
-	"rfactor2telegrambot/pkg/servers"
-	"rfactor2telegrambot/pkg/settings"
 	"sync"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/apps"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/menus"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/model"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/pubsub"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/servers"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/settings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/nicksnyder/go-i18n/v2/i18n"

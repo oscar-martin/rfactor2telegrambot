@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"rfactor2telegrambot/pkg/menus"
-	"rfactor2telegrambot/pkg/settings"
 	"strings"
 	"sync"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/menus"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/settings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/nicksnyder/go-i18n/v2/i18n"

@@ -6,12 +6,13 @@ import (
 	"log"
 	"math"
 	"net/url"
-	"rfactor2telegrambot/pkg/helper"
-	"rfactor2telegrambot/pkg/model"
 	"slices"
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/helper"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/model"
 
 	"github.com/gorilla/websocket"
 )

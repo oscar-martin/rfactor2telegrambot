@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"rfactor2telegrambot/pkg/model"
-	"rfactor2telegrambot/pkg/resources"
 	"time"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/model"
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/resources"
 )
 
 func getSelectedSessionData(serverUrl string) (model.SelectedSessionData, error) {

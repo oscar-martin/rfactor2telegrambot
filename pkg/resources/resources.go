@@ -7,7 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"rfactor2telegrambot/pkg/layout"
+
+	"github.com/oscar-martin/rfactor2telegrambot/pkg/layout"
 )
 
 const (
