@@ -10,6 +10,7 @@ import (
 	"sync"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 type ContextUser string
@@ -33,13 +34,17 @@ type SettingsApp struct {
 	appMenu      menus.ApplicationMenu
 	menuKeyboard tgbotapi.ReplyKeyboardMarkup
 	sm           *settings.Manager
+	loc          *i18n.Localizer
+	title        string
 	mu           sync.Mutex
 }
 
-func NewSettingsApp(bot *tgbotapi.BotAPI, appMenu menus.ApplicationMenu, sm *settings.Manager) *SettingsApp {
+func NewSettingsApp(bot *tgbotapi.BotAPI, appMenu menus.ApplicationMenu, sm *settings.Manager, appName string, loc *i18n.Localizer) *SettingsApp {
 	sa := &SettingsApp{
 		bot:     bot,
 		sm:      sm,
+		loc:     loc,
+		title:   appName,
 		appMenu: appMenu,
 	}
 
@@ -65,7 +70,14 @@ func (sa *SettingsApp) AcceptCallback(query *tgbotapi.CallbackQuery) (bool, func
 
 			chatCtxValue := ctx.Value(ChatContextKey)
 			if chatCtxValue == nil {
-				msg := tgbotapi.NewMessage(query.Message.Chat.ID, "Could not read chat information")
+				message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "settings.chatNotFound",
+						Other: "Could not read chat information",
+					},
+				})
+
+				msg := tgbotapi.NewMessage(query.Message.Chat.ID, message)
 				msg.ReplyMarkup = sa.appMenu.PrevMenu()
 				_, err := sa.bot.Send(msg)
 				return err
@@ -75,7 +87,14 @@ func (sa *SettingsApp) AcceptCallback(query *tgbotapi.CallbackQuery) (bool, func
 
 			err := sa.sm.ToggleNotificationForSessionStarted(userID, chatID, sessionType)
 			if err != nil {
-				msg := tgbotapi.NewMessage(query.Message.Chat.ID, "Could not change notification status")
+				message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "settings.couldNotChangeNotificationStatus",
+						Other: "Could not change notification status",
+					},
+				})
+
+				msg := tgbotapi.NewMessage(query.Message.Chat.ID, message)
 				msg.ReplyMarkup = sa.appMenu.PrevMenu()
 				_, err := sa.bot.Send(msg)
 				return err
@@ -91,7 +110,7 @@ func (sa *SettingsApp) AcceptButton(button string) (bool, func(ctx context.Conte
 	defer sa.mu.Unlock()
 
 	// fmt.Printf("SETTINGS: button: %s. appName: %s\n", button, buttonSettings)
-	if button == buttonSettings {
+	if button == sa.title {
 		return true, sa.renderNotifications(nil)
 	} else if button == sa.appMenu.ButtonBackTo() {
 		return true, func(ctx context.Context, chatId int64) error {
@@ -108,7 +127,14 @@ func (sa *SettingsApp) renderNotifications(messageID *int) func(ctx context.Cont
 	return func(ctx context.Context, chatId int64) error {
 		userCtxValue := ctx.Value(UserContextKey)
 		if userCtxValue == nil {
-			msg := tgbotapi.NewMessage(chatId, "Could not read user")
+			message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+				DefaultMessage: &i18n.Message{
+					ID:    "settings.userNotFound",
+					Other: "Could not read user",
+				},
+			})
+
+			msg := tgbotapi.NewMessage(chatId, message)
 			msg.ReplyMarkup = sa.appMenu.PrevMenu()
 			_, err := sa.bot.Send(msg)
 			return err
@@ -118,13 +144,26 @@ func (sa *SettingsApp) renderNotifications(messageID *int) func(ctx context.Cont
 		notificationStatus, err := sa.sm.ListNotifications(userID)
 		if err != nil {
 			log.Println(err)
-			msg := tgbotapi.NewMessage(chatId, "Could not read notifications for user")
+			message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+				DefaultMessage: &i18n.Message{
+					ID:    "settings.couldNotReadNotifications",
+					Other: "Could not read notifications for user",
+				},
+			})
+
+			msg := tgbotapi.NewMessage(chatId, message)
 			msg.ReplyMarkup = sa.appMenu.PrevMenu()
 			_, err := sa.bot.Send(msg)
 			return err
 		}
 		keyboard := getSettingsInlineKeyboard(userID, notificationStatus)
-		text := "Notification status\n(Only notifies the first session)"
+		text := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "settings.notifications",
+				Other: "Notification status\n(Only notifies the first session)",
+			},
+		})
+
 		var cfg tgbotapi.Chattable
 		if messageID == nil {
 			msg := tgbotapi.NewMessage(chatId, text)

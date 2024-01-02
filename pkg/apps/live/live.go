@@ -12,11 +12,11 @@ import (
 	"sync"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 const (
-	liveAppName    = "LiveTiming"
-	buttonSettings = "Settings"
+	liveAppName = "LiveTiming"
 )
 
 type LiveApp struct {
@@ -26,10 +26,11 @@ type LiveApp struct {
 	accepters                  []apps.Accepter
 	servers                    []servers.Server
 	liveSessionInfoUpdateChans []<-chan model.LiveSessionInfoData
+	loc                        *i18n.Localizer
 	mu                         sync.Mutex
 }
 
-func NewLiveApp(ctx context.Context, bot *tgbotapi.BotAPI, ss []servers.Server, appMenu menus.ApplicationMenu, sm *settings.Manager) (*LiveApp, error) {
+func NewLiveApp(ctx context.Context, bot *tgbotapi.BotAPI, ss []servers.Server, appMenu menus.ApplicationMenu, sm *settings.Manager, loc *i18n.Localizer) (*LiveApp, error) {
 	liveSessionInfoUpdateChans := []<-chan model.LiveSessionInfoData{}
 	for _, server := range ss {
 		liveSessionInfoUpdateChans = append(liveSessionInfoUpdateChans, pubsub.LiveSessionInfoDataPubSub.Subscribe(pubsub.PubSubSessionInfoPreffix+server.ID))
@@ -38,17 +39,18 @@ func NewLiveApp(ctx context.Context, bot *tgbotapi.BotAPI, ss []servers.Server, 
 		bot:                        bot,
 		appMenu:                    appMenu,
 		liveSessionInfoUpdateChans: liveSessionInfoUpdateChans,
+		loc:                        loc,
 		servers:                    ss,
 	}
 
 	la.accepters = []apps.Accepter{}
 	for _, server := range ss {
-		serverAppMenu := menus.NewApplicationMenu(server.StatusAndName(), liveAppName, la)
-		serverApp := NewServerApp(la.bot, serverAppMenu, server.ID, server.URL)
+		serverAppMenu := menus.NewApplicationMenu(server.StatusAndName(), liveAppName, la, loc)
+		serverApp := NewServerApp(la.bot, serverAppMenu, server.ID, server.URL, loc)
 		la.accepters = append(la.accepters, serverApp)
 	}
 
-	settingsApp := NewSettingsApp(la.bot, appMenu, sm)
+	settingsApp := NewSettingsApp(la.bot, appMenu, sm, la.getButtonSettingsTitle(), loc)
 	la.accepters = append(la.accepters, settingsApp)
 
 	la.updateKeyboard()
@@ -70,7 +72,7 @@ func (la *LiveApp) updateKeyboard() {
 	}
 	backButtonRow := tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton(la.appMenu.ButtonBackTo()),
-		tgbotapi.NewKeyboardButton(buttonSettings),
+		tgbotapi.NewKeyboardButton(la.getButtonSettingsTitle()),
 	)
 
 	buttons = append(buttons, backButtonRow)
@@ -78,6 +80,16 @@ func (la *LiveApp) updateKeyboard() {
 	menuKeyboard := tgbotapi.NewReplyKeyboard()
 	menuKeyboard.Keyboard = buttons
 	la.menuKeyboard = menuKeyboard
+}
+
+func (la *LiveApp) getButtonSettingsTitle() string {
+	msg := la.loc.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "live.buttonSettings",
+			Other: "Settings",
+		},
+	})
+	return msg
 }
 
 func (la *LiveApp) update(lsid model.LiveSessionInfoData) {

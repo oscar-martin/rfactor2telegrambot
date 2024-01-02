@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"f1champshotlapsbot/pkg/apps"
 	"f1champshotlapsbot/pkg/apps/live"
 	"f1champshotlapsbot/pkg/apps/mainapp"
@@ -17,6 +18,9 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"golang.org/x/text/language"
 
 	_ "net/http/pprof"
 
@@ -106,12 +110,17 @@ func main() {
 	exitChan := make(chan bool)
 	refreshServersTicker := time.NewTicker(10 * time.Second)
 
+	bundle := i18n.NewBundle(language.English)
+	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
+	bundle.MustLoadMessageFile("active.en.json")
+	loc := i18n.NewLocalizer(bundle, "en")
+
 	settings, err := settings.NewManager()
 	if err != nil {
 		log.Fatalf("Error creating settings manager: %s", err.Error())
 	}
 
-	nm := notification.NewManager(ctx, bot, settings)
+	nm := notification.NewManager(ctx, bot, settings, loc)
 	go nm.Start(exitChan)
 
 	// build the main app
@@ -120,13 +129,13 @@ func main() {
 		log.Fatalf("Error creating servers: %s", err.Error())
 	}
 	ws := webserver.NewManager()
-	sm, err := servers.NewManager(ctx, bot, ss, ws)
+	sm, err := servers.NewManager(ctx, bot, ss, ws, loc)
 	if err != nil {
 		log.Fatalf("Error creating servers manager: %s", err.Error())
 	}
 	// ws.Debug()
 
-	app, err = mainapp.NewMainApp(ctx, bot, ss, exitChan, settings)
+	app, err = mainapp.NewMainApp(ctx, bot, ss, exitChan, settings, loc)
 	if err != nil {
 		log.Fatalf("Error creating main app: %s", err.Error())
 	}

@@ -10,6 +10,7 @@ import (
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 const (
@@ -36,11 +37,12 @@ func (m menuer) Menu() tgbotapi.ReplyKeyboardMarkup {
 type MainApp struct {
 	bot       *tgbotapi.BotAPI
 	accepters []apps.Accepter
+	loc       *i18n.Localizer
 }
 
-func NewMainApp(ctx context.Context, bot *tgbotapi.BotAPI, ss []servers.Server, exitChan chan bool, sm *settings.Manager) (*MainApp, error) {
-	liveAppMenu := menus.NewApplicationMenu(buttonLive, appName, menuer{})
-	liveApp, err := live.NewLiveApp(ctx, bot, ss, liveAppMenu, sm)
+func NewMainApp(ctx context.Context, bot *tgbotapi.BotAPI, ss []servers.Server, exitChan chan bool, sm *settings.Manager, loc *i18n.Localizer) (*MainApp, error) {
+	liveAppMenu := menus.NewApplicationMenu(buttonLive, appName, menuer{}, loc)
+	liveApp, err := live.NewLiveApp(ctx, bot, ss, liveAppMenu, sm, loc)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +51,7 @@ func NewMainApp(ctx context.Context, bot *tgbotapi.BotAPI, ss []servers.Server, 
 
 	return &MainApp{
 		bot:       bot,
+		loc:       loc,
 		accepters: accepters,
 	}, nil
 }
@@ -92,9 +95,31 @@ func (m *MainApp) AcceptButton(button string) (bool, func(ctx context.Context, c
 
 func (m *MainApp) renderStart() func(ctx context.Context, chatId int64) error {
 	return func(ctx context.Context, chatId int64) error {
-		message := "Hello, I am a bot that allows you to get information about ongoing sessions.\n\n"
-		message += "You can use the following command:\n\n"
-		message += fmt.Sprintf("%s - Show the bot menu\n", menuMenu)
+		msg1 := m.loc.MustLocalize(&i18n.LocalizeConfig{
+			// MessageID: "mainapp.helloBot1",
+			DefaultMessage: &i18n.Message{
+				ID:    "mainapp.helloBot1",
+				Other: "Hello, I am a bot that allows you to get information about ongoing sessions.",
+			},
+		})
+
+		msg2 := m.loc.MustLocalize(&i18n.LocalizeConfig{
+			// MessageID: "mainapp.helloBot2",
+			DefaultMessage: &i18n.Message{
+				ID:    "mainapp.helloBot2",
+				Other: "You can use the following command:",
+			},
+		})
+
+		msgStartMenu := m.loc.MustLocalize(&i18n.LocalizeConfig{
+			// MessageID: "mainapp.startMenu",
+			DefaultMessage: &i18n.Message{
+				ID:    "mainapp.startMenu",
+				Other: "Show the bot menu",
+			},
+		})
+
+		message := fmt.Sprintf("%s\n\n", msg1) + fmt.Sprintf("%s\n\n", msg2) + fmt.Sprintf("%s - %s\n", menuMenu, msgStartMenu)
 		msg := tgbotapi.NewMessage(chatId, message)
 		msg.ReplyMarkup = menuKeyboard
 		_, err := m.bot.Send(msg)
@@ -104,7 +129,14 @@ func (m *MainApp) renderStart() func(ctx context.Context, chatId int64) error {
 
 func (m *MainApp) renderMenu() func(ctx context.Context, chatId int64) error {
 	return func(ctx context.Context, chatId int64) error {
-		message := "Bot menu.\n\n"
+		msgMenuMenu := m.loc.MustLocalize(&i18n.LocalizeConfig{
+			// MessageID: "mainapp.menuMenu",
+			DefaultMessage: &i18n.Message{
+				ID:    "mainapp.menuMenu",
+				Other: "Bot menu.",
+			},
+		})
+		message := fmt.Sprintf("%s\n\n", msgMenuMenu)
 		msg := tgbotapi.NewMessage(chatId, message)
 		msg.ReplyMarkup = menuKeyboard
 		_, err := m.bot.Send(msg)

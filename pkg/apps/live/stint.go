@@ -16,12 +16,12 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 const (
 	subcommandShowDrivers = "show_drivers"
 	subcommandShowCars    = "show_cars"
-	tableLap              = "LAP"
 )
 
 type StintApp struct {
@@ -31,19 +31,24 @@ type StintApp struct {
 	serverURL                         string
 	liveStandingHistoryData           model.LiveStandingHistoryData
 	liveStandingHistoryDataUpdateChan <-chan model.LiveStandingHistoryData
+	appName                           string
 
 	liveSessionInfoData           model.LiveSessionInfoData
 	liveSessionInfoDataUpdateChan <-chan model.LiveSessionInfoData
 
+	loc *i18n.Localizer
+
 	mu sync.Mutex
 }
 
-func NewStintApp(bot *tgbotapi.BotAPI, appMenu menus.ApplicationMenu, serverID, serverURL string) *StintApp {
+func NewStintApp(bot *tgbotapi.BotAPI, appMenu menus.ApplicationMenu, serverID, serverURL string, appName string, loc *i18n.Localizer) *StintApp {
 	sa := &StintApp{
 		bot:                               bot,
 		appMenu:                           appMenu,
 		serverID:                          serverID,
 		serverURL:                         serverURL,
+		loc:                               loc,
+		appName:                           appName,
 		liveStandingHistoryDataUpdateChan: pubsub.LiveStandingHistoryPubSub.Subscribe(pubsub.PubSubStintDataPreffix + serverID),
 		liveSessionInfoDataUpdateChan:     pubsub.LiveSessionInfoDataPubSub.Subscribe(pubsub.PubSubSessionInfoPreffix + serverID),
 	}
@@ -100,7 +105,7 @@ func (sa *StintApp) AcceptButton(button string) (bool, func(ctx context.Context,
 	defer sa.mu.Unlock()
 
 	// fmt.Printf("STINT: button: %s. appName: %s\n", button, buttonStint+" "+sa.stintData.ServerName)
-	if button == buttonStint+" "+sa.liveStandingHistoryData.ServerName {
+	if button == sa.appName+" "+sa.liveStandingHistoryData.ServerName {
 		return true, sa.renderDrivers()
 	} else if button == sa.appMenu.ButtonBackTo() {
 		return true, func(ctx context.Context, chatId int64) error {
@@ -122,7 +127,13 @@ func (sa *StintApp) renderDrivers() func(ctx context.Context, chatId int64) erro
 				return err
 			}
 		} else {
-			message := "There are no drivers in the session"
+			message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+				DefaultMessage: &i18n.Message{
+					ID:    "stint.noDriversInSession",
+					Other: "There are no drivers in the session",
+				},
+			})
+
 			msg := tgbotapi.NewMessage(chatId, message)
 			_, err := sa.bot.Send(msg)
 			return err
@@ -141,7 +152,14 @@ func (sa *StintApp) handleStintDataCallbackQuery(chatId int64, messageId *int, d
 			log.Printf("An error occured: %s", err.Error())
 		}
 	} else {
-		message := fmt.Sprintf("No data for driver %s", driver)
+		text := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "stint.noDataForDriver",
+				Other: "No data for driver %s",
+			},
+		})
+
+		message := fmt.Sprintf(text, driver)
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := sa.bot.Send(msg)
 		return err
@@ -167,22 +185,58 @@ func (sa *StintApp) handleCarDataCallbackQuery(chatId int64, messageId *int, dri
 			}()
 			select {
 			case <-ctx.Done():
-				message := fmt.Sprintf("The waiting time for downloading the car image for %s has expired", driver)
+				text := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "stint.timeoutDownloadingCarImage",
+						Other: "The waiting time for downloading the car image for %s has expired",
+					},
+				})
+
+				message := fmt.Sprintf(text, driver)
 				msg := tgbotapi.NewMessage(chatId, message)
 				_, err := sa.bot.Send(msg)
 				return err
 			case err := <-errChan:
-				message := fmt.Sprintf("Could not read the image of the car %s", driver)
+				text := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "stint.couldNotReadCarImage",
+						Other: "Could not read the image of the car %s: %v",
+					},
+				})
+
+				message := fmt.Sprintf(text, driver, err)
 				msg := tgbotapi.NewMessage(chatId, message)
 				_, err = sa.bot.Send(msg)
 				return err
 			case carTh := <-carThChan:
 				filePath := carTh.FilePath()
-				text := fmt.Sprintf(`‣ Car: %s
-‣ Class: %s
-‣ Driver: %s`,
+				carText := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "stint.car",
+						Other: "Car",
+					},
+				})
+				classText := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "stint.class",
+						Other: "Class",
+					},
+				})
+				driverText := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "stint.driver",
+						Other: "Driver",
+					},
+				})
+
+				text := fmt.Sprintf(`‣ %s: %s
+‣ %s: %s
+‣ %s: %s`,
+					carText,
 					driverData[0].VehicleName,
+					classText,
 					driverData[0].CarClass,
+					driverText,
 					driverData[0].DriverName)
 				msg := tgbotapi.NewPhoto(chatId, tgbotapi.FilePath(filePath))
 				msg.Caption = text
@@ -190,13 +244,26 @@ func (sa *StintApp) handleCarDataCallbackQuery(chatId int64, messageId *int, dri
 				return err
 			}
 		} else {
-			message := fmt.Sprintf("No data for driver %s", driver)
+			text := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+				DefaultMessage: &i18n.Message{
+					ID:    "stint.noDataForDriver",
+					Other: "No data for driver %s",
+				},
+			})
+			message := fmt.Sprintf(text, driver)
 			msg := tgbotapi.NewMessage(chatId, message)
 			_, err := sa.bot.Send(msg)
 			return err
 		}
 	} else {
-		message := fmt.Sprintf("No data for driver %s", driver)
+		text := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "stint.noDataForDriver",
+				Other: "No data for driver %s",
+			},
+		})
+
+		message := fmt.Sprintf(text, driver)
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := sa.bot.Send(msg)
 		return err
@@ -213,14 +280,14 @@ func (sa *StintApp) sendStintData(chatId int64, messageId *int, driverData []mod
 		t.SetStyle(style)
 		t.AppendSeparator()
 		switch infoType {
-		case inlineKeyboardTimes:
-			t.AppendHeader(table.Row{tableLap, infoType, "Top Speed"})
-		case inlineKeyboardSectors:
-			t.AppendHeader(table.Row{tableLap, infoType})
+		case getInlineKeyboardTimes(sa.loc):
+			t.AppendHeader(table.Row{getLapHeader(sa.loc), infoType, getTopSpeedHeader(sa.loc)})
+		case getInlineKeyboardSectors(sa.loc):
+			t.AppendHeader(table.Row{getLapHeader(sa.loc), infoType})
 		}
 		for idx, lapData := range driverData {
 			switch infoType {
-			case inlineKeyboardTimes:
+			case getInlineKeyboardTimes(sa.loc):
 				topSpeed := "-"
 				if lapData.TopSpeed > 0 && lapData.LapTime > 0 {
 					topSpeed = fmt.Sprintf("%.1f km/h", lapData.TopSpeed)
@@ -231,7 +298,7 @@ func (sa *StintApp) sendStintData(chatId int64, messageId *int, driverData []mod
 					helper.SecondsToMinutes(lapData.LapTime),
 					topSpeed,
 				})
-			case inlineKeyboardSectors:
+			case getInlineKeyboardSectors(sa.loc):
 				ls1 := lapData.SectorTime1
 				ls2 := -1.0
 				if ls1 > 0.0 && lapData.SectorTime2 > 0.0 {
@@ -250,10 +317,18 @@ func (sa *StintApp) sendStintData(chatId int64, messageId *int, driverData []mod
 		}
 		t.Render()
 
-		keyboard := getStintInlineKeyboard(driverName, serverId)
+		keyboard := getStintInlineKeyboard(driverName, serverId, sa.loc)
 		var cfg tgbotapi.Chattable
 		remainingTime := helper.SecondsToHoursAndMinutes(sa.liveSessionInfoData.SessionInfo.EndEventTime - sa.liveSessionInfoData.SessionInfo.CurrentEventTime)
-		text := fmt.Sprintf("```\nTime left: %s\nData for %s in %q\n\n%s```", remainingTime, driverName, serverName, b.String())
+
+		message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "stint.sessionData",
+				Other: "```\nTime left: %s\nData for %s in %q\n\n%s```",
+			},
+		})
+
+		text := fmt.Sprintf(message, remainingTime, driverName, serverName, b.String())
 		if messageId == nil {
 			msg := tgbotapi.NewMessage(chatId, text)
 			msg.ParseMode = tgbotapi.ModeMarkdownV2
@@ -268,21 +343,27 @@ func (sa *StintApp) sendStintData(chatId int64, messageId *int, driverData []mod
 		_, err := sa.bot.Send(cfg)
 		return err
 	} else {
-		message := "There are no laps in the session"
+		message := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "stint.noLapsInSession",
+				Other: "There are no laps in the session",
+			},
+		})
+
 		msg := tgbotapi.NewMessage(chatId, message)
 		_, err := sa.bot.Send(msg)
 		return err
 	}
 }
 
-func getStintInlineKeyboard(driver, serverID string) tgbotapi.InlineKeyboardMarkup {
+func getStintInlineKeyboard(driver, serverID string, loc *i18n.Localizer) tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(inlineKeyboardTimes+" "+symbolTimes, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, serverID, inlineKeyboardTimes, driver)),
-			tgbotapi.NewInlineKeyboardButtonData(inlineKeyboardSectors+" "+symbolSectors, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, serverID, inlineKeyboardSectors, driver)),
+			tgbotapi.NewInlineKeyboardButtonData(getInlineKeyboardTimes(loc)+" "+symbolTimes, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, serverID, getInlineKeyboardTimes(loc), driver)),
+			tgbotapi.NewInlineKeyboardButtonData(getInlineKeyboardSectors(loc)+" "+symbolSectors, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, serverID, getInlineKeyboardSectors(loc), driver)),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(inlineKeyboardCar+" "+symbolPhoto, fmt.Sprintf("%s:%s:%s", subcommandShowCars, serverID, driver)),
+			tgbotapi.NewInlineKeyboardButtonData(getInlineKeyboardCar(loc)+" "+symbolPhoto, fmt.Sprintf("%s:%s:%s", subcommandShowCars, serverID, driver)),
 		),
 	)
 }
@@ -312,9 +393,18 @@ func (sa *StintApp) driversTextMarkup() (text string, markup tgbotapi.InlineKeyb
 		if idx%2 == 0 {
 			buttons = append(buttons, []tgbotapi.InlineKeyboardButton{})
 		}
-		buttons[len(buttons)-1] = append(buttons[len(buttons)-1], tgbotapi.NewInlineKeyboardButtonData(driver, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, sa.liveStandingHistoryData.ServerID, inlineKeyboardTimes, driver)))
+		buttons[len(buttons)-1] = append(buttons[len(buttons)-1], tgbotapi.NewInlineKeyboardButtonData(driver, fmt.Sprintf("%s:%s:%s:%s", subcommandShowDrivers, sa.liveStandingHistoryData.ServerID, getInlineKeyboardTimes(sa.loc), driver)))
 	}
-	text = "Choose the driver from the list:\n\n"
+
+	msg := sa.loc.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "stint.chooseDriverFromList",
+			Other: "Choose the driver from the list:",
+		},
+	})
+
+	text = fmt.Sprintf("%s\n\n", msg)
+
 	markup = tgbotapi.NewInlineKeyboardMarkup(buttons...)
 	return
 }

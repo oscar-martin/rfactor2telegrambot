@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/nikoksr/notify"
 )
 
@@ -29,13 +30,15 @@ type Manager struct {
 	ctx    context.Context
 	lister Lister
 	bot    *tgbotapi.BotAPI
+	loc    *i18n.Localizer
 }
 
-func NewManager(ctx context.Context, bot *tgbotapi.BotAPI, lister Lister) *Manager {
+func NewManager(ctx context.Context, bot *tgbotapi.BotAPI, lister Lister, loc *i18n.Localizer) *Manager {
 	return &Manager{
 		ctx:    ctx,
 		bot:    bot,
 		lister: lister,
+		loc:    loc,
 	}
 }
 
@@ -93,7 +96,16 @@ func (m *Manager) sendNotification(tusers []settings.TelegramUser, newSession mo
 	}
 
 	n := notify.NewWithServices(tg)
-	err := n.Send(m.ctx, "New session started:", newSession.String())
+
+	msg := m.loc.MustLocalize(&i18n.LocalizeConfig{
+		// MessageID: "notification.sessionStarted",
+		DefaultMessage: &i18n.Message{
+			ID:    "notification.sessionStarted",
+			Other: "New session started:",
+		},
+	})
+
+	err := n.Send(m.ctx, msg, newSession.String())
 	if err != nil {
 		return err
 	}

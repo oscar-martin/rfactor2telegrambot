@@ -13,6 +13,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 var (
@@ -23,13 +24,15 @@ type Manager struct {
 	ctx     context.Context
 	servers []Server
 	bot     *tgbotapi.BotAPI
+	loc     *i18n.Localizer
 }
 
-func NewManager(ctx context.Context, bot *tgbotapi.BotAPI, servers []Server, ws *webserver.Manager) (*Manager, error) {
+func NewManager(ctx context.Context, bot *tgbotapi.BotAPI, servers []Server, ws *webserver.Manager, loc *i18n.Localizer) (*Manager, error) {
 	m := &Manager{
 		ctx:     ctx,
 		bot:     bot,
 		servers: servers,
+		loc:     loc,
 	}
 
 	err := m.initializeServers(ws)
@@ -69,7 +72,7 @@ func (sm *Manager) initializeServers(ws *webserver.Manager) error {
 		sm.servers[i].SelectedSessionDataChan = make(chan model.SelectedSessionData)
 		sm.servers[i].CarsPositionChan = make(chan []model.CarPosition)
 		sm.servers[i].LiveMapPath = fmt.Sprintf("/servers/%d", i)
-		sm.servers[i].LiveMap = livemap.NewLiveMap(ws.GetRouter(sm.servers[i].ID, sm.servers[i].LiveMapPath), sm.servers[i].ID, sm.servers[i].LiveMapPath)
+		sm.servers[i].LiveMap = livemap.NewLiveMap(ws.GetRouter(sm.servers[i].ID, sm.servers[i].LiveMapPath), sm.servers[i].ID, sm.servers[i].LiveMapPath, sm.loc)
 
 		go func(idx int) {
 			for liveSessionInfo := range sm.servers[idx].LiveSessionInfoDataChan {

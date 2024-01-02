@@ -21,6 +21,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/llgcode/draw2d"
 	"github.com/llgcode/draw2d/draw2dsvg"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 type Point struct {
@@ -44,16 +45,18 @@ type LiveMap struct {
 	svgMetadata         layout.SvgMetadata
 	carsPositionChan    <-chan []model.CarPosition
 	carsPosition        []model.CarPosition
+	loc                 *i18n.Localizer
 	mu                  sync.Mutex
 }
 
-func NewLiveMap(r *mux.Router, serverId, path string) *LiveMap {
+func NewLiveMap(r *mux.Router, serverId, path string, loc *i18n.Localizer) *LiveMap {
 	lm := &LiveMap{
 		serverId:         serverId,
 		sessionRunning:   false,
 		path:             path,
 		carsPositionChan: pubsub.CarsPositionPubSub.Subscribe(pubsub.PubSubCarsPositionPreffix + serverId),
 		carsPosition:     []model.CarPosition{},
+		loc:              loc,
 		mu:               sync.Mutex{},
 	}
 
@@ -195,10 +198,24 @@ type Data struct {
 func (lm *LiveMap) livemapHandler(serverId string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !lm.sessionRunning {
-			fmt.Fprintf(w, "No sessions running")
+			msg := lm.loc.MustLocalize(&i18n.LocalizeConfig{
+				// MessageID: "menus.backTo",
+				DefaultMessage: &i18n.Message{
+					ID:    "livemap.noSessionsRunning",
+					Other: "No sessions running",
+				},
+			})
+			_, _ = fmt.Fprint(w, msg)
 			return
 		} else if lm.svgTrackResource.IsZero() {
-			fmt.Fprintf(w, "The track map is not yet available")
+			msg := lm.loc.MustLocalize(&i18n.LocalizeConfig{
+				// MessageID: "menus.backTo",
+				DefaultMessage: &i18n.Message{
+					ID:    "livemap.trackMapNotAvailable",
+					Other: "The track map is not yet available",
+				},
+			})
+			_, _ = fmt.Fprint(w, msg)
 			return
 		}
 		e := Data{
@@ -208,7 +225,7 @@ func (lm *LiveMap) livemapHandler(serverId string) func(w http.ResponseWriter, r
 			Height:       int(lm.svgMetadata.Height),
 			Scale:        (1.0 - layout.ScaleSVG),
 		}
-		homeTemplate.Execute(w, e)
+		_ = homeTemplate.Execute(w, e)
 	}
 }
 

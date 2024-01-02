@@ -1,0 +1,258 @@
+{
+  "apps.bestLap": {
+    "hash": "sha1-90f81b50631c53f1998187c3e892309e6e6232d6",
+    "other": "Best Lap"
+  },
+  "apps.car": {
+    "hash": "sha1-bc47a3dce0c7627010946f0a17b5ec88707f2b34",
+    "other": "Car"
+  },
+  "apps.cars": {
+    "hash": "sha1-6e31539a6a65f1791fdfbeea77e3b535d9259121",
+    "other": "Cars"
+  },
+  "apps.drivers": {
+    "hash": "sha1-a40ad45bd2e1220ed2a1f5743ec1323bd7700e8f",
+    "other": "Drivers"
+  },
+  "apps.gap": {
+    "hash": "sha1-dd94a4ca6742b6182676bec3d6d7f2bdec632575",
+    "other": "Gap ⏳"
+  },
+  "apps.headerBest": {
+    "hash": "sha1-77003d07271f14977f2cf290c9d16c81e05ab6dd",
+    "other": "Best"
+  },
+  "apps.headerDriver": {
+    "hash": "sha1-ef1bcca724f3117d8431c3743657459755195012",
+    "other": "DRI"
+  },
+  "apps.headerLap": {
+    "hash": "sha1-84b36f9c81bc2eb427853ef1c003cf3337cd076f",
+    "other": "LAP"
+  },
+  "apps.headerLast": {
+    "hash": "sha1-d1c69a859a9638b242f2dabf8acf1c0b1450ce6b",
+    "other": "Last"
+  },
+  "apps.headerName": {
+    "hash": "sha1-709a23220f2c3d64d1e1d6d18c4d5280f8d82fca",
+    "other": "Name"
+  },
+  "apps.headerOptimal": {
+    "hash": "sha1-5193a46114f37a26c24bcb5dc7a99da2f7f66210",
+    "other": "Optimal"
+  },
+  "apps.headerSectors": {
+    "hash": "sha1-b73f7214e5af534f86155538f1cb1df1906be44f",
+    "other": "Sectors"
+  },
+  "apps.headerTopSpeed": {
+    "hash": "sha1-dbb5d483fa2e23ba9cb3d858cdac37f0e0ae4155",
+    "other": "Top Speed"
+  },
+  "apps.info": {
+    "hash": "sha1-507cb64cd86cbb08d19aae0230654b66e19cef8f",
+    "other": "Info 👐"
+  },
+  "apps.laps": {
+    "hash": "sha1-cfc26f2fc49319a629d75e7dd0b1c6f730adb579",
+    "other": "Laps"
+  },
+  "apps.lastLap": {
+    "hash": "sha1-8f0741108433075579c9d9e4d07aecd50ff5e387",
+    "other": "Last Lap"
+  },
+  "apps.map": {
+    "hash": "sha1-ded781acc53bbdf51914fe3490fe11f25ccebec5",
+    "other": "Map 🗺️"
+  },
+  "apps.optimal": {
+    "hash": "sha1-5193a46114f37a26c24bcb5dc7a99da2f7f66210",
+    "other": "Optimal"
+  },
+  "apps.sectors": {
+    "hash": "sha1-b73f7214e5af534f86155538f1cb1df1906be44f",
+    "other": "Sectors"
+  },
+  "apps.sectorsBL": {
+    "hash": "sha1-10d3b06172fcf25e9d7b996206e404b433d89735",
+    "other": "Sectors BL."
+  },
+  "apps.sectorsLL": {
+    "hash": "sha1-3e21502bc864b0f76593a80a5fddf71f6828112b",
+    "other": "Sectors LL."
+  },
+  "apps.sectorsO": {
+    "hash": "sha1-3b6177a18ccf30ecfb5d009b282056df49fa247f",
+    "other": "Sectors O."
+  },
+  "apps.status": {
+    "hash": "sha1-05f5fa1fd2f3fbffc22abfff8b80c4a39462badc",
+    "other": "Status 🏎️"
+  },
+  "apps.time": {
+    "hash": "sha1-6c82e6dd86807ee3db07e3c82bec1ae1ce00b08b",
+    "other": "Time"
+  },
+  "apps.topSpeed": {
+    "hash": "sha1-dbb5d483fa2e23ba9cb3d858cdac37f0e0ae4155",
+    "other": "Top Speed"
+  },
+  "apps.tyres": {
+    "hash": "sha1-249a370850137de0898f65fbe6ac9bd231e6ce16",
+    "other": "Tyres"
+  },
+  "apps.update": {
+    "hash": "sha1-fb91e24fa52d8d2b32937bf04d843f730319a902",
+    "other": "Update"
+  },
+  "live.buttonSettings": {
+    "hash": "sha1-c7f73bb54d928922c3838bb789ee9fb8a5b1eb37",
+    "other": "Settings"
+  },
+  "livemap.noSessionsRunning": {
+    "hash": "sha1-d57f2e3ba99c8fa92b949fb2a403994b6d6310f0",
+    "other": "No sessions running"
+  },
+  "livemap.trackMapNotAvailable": {
+    "hash": "sha1-11ce6e33af4682439a878d7ae8baf4e751eec4da",
+    "other": "The track map is not yet available"
+  },
+  "mainapp.helloBot1": {
+    "hash": "sha1-c1b670e6f2d65b95e844d9effbd8b84ea22d6af7",
+    "other": "Hello, I am a bot that allows you to get information about ongoing sessions."
+  },
+  "mainapp.helloBot2": {
+    "hash": "sha1-b9697313f49e3c8d4cb4564d3182526716a36013",
+    "other": "You can use the following command:"
+  },
+  "mainapp.menuMenu": {
+    "hash": "sha1-8f14d92b77c25b40d71f60441f570157e1a7a0ed",
+    "other": "Bot menu."
+  },
+  "mainapp.startMenu": {
+    "hash": "sha1-fe557de14a8c1df87a961474aef9e3ba8599a6b4",
+    "other": "Show the bot menu"
+  },
+  "menus.backTo": {
+    "hash": "sha1-bbe6515e366531ac45779e3d5c9b5a456560e812",
+    "other": "Back to"
+  },
+  "notification.sessionStarted": {
+    "hash": "sha1-38b2ff98835fb4f90fbbd1776b6b6bbf2127048e",
+    "other": "New session started:"
+  },
+  "server.carsInSession": {
+    "hash": "sha1-194ebedc8b42d35a1e417969940a842ed6b5c4a5",
+    "other": "Cars in session"
+  },
+  "server.laps": {
+    "hash": "sha1-cfc26f2fc49319a629d75e7dd0b1c6f730adb579",
+    "other": "Laps"
+  },
+  "server.noDataReceived": {
+    "hash": "sha1-158884d4fd08270b37367cae3d1e737c5de85231",
+    "other": "No data received from server %s"
+  },
+  "server.notLimited": {
+    "hash": "sha1-70950032d3bebec4423ddb9a63f17fb269d40fc1",
+    "other": "Not Limited"
+  },
+  "server.rain": {
+    "hash": "sha1-0a858c95bc97fa8feecf12aa0abf3b4aa804953d",
+    "other": "Rain"
+  },
+  "server.serverIsOffline": {
+    "hash": "sha1-5b4c151ffa76c960b4314f5374e8820214719670",
+    "other": "Server %s is offline"
+  },
+  "server.session": {
+    "hash": "sha1-f7f1997c6cd1aa051279675742272a956e7db628",
+    "other": "Session"
+  },
+  "server.temp": {
+    "hash": "sha1-c6f9852fca7343b89f41b0c03cb55cf96064adc0",
+    "other": "Temperature (Track/Ambient)"
+  },
+  "server.timeLeft": {
+    "hash": "sha1-99c94eb852d25f8caf4e9caedd4ec3e313f33ed9",
+    "other": "Time left"
+  },
+  "server.track": {
+    "hash": "sha1-b1c5a7af06ba8c911bcfd11f72d7463fed9a472d",
+    "other": "Track"
+  },
+  "serverapp.buttonGrid": {
+    "hash": "sha1-701c483f813cf119ec80b185a049bcfdc29f9161",
+    "other": "Grid"
+  },
+  "serverapp.buttonInfo": {
+    "hash": "sha1-4b631f69842530d659306c8f06dbad594a6b1807",
+    "other": "Info"
+  },
+  "serverapp.buttonStint": {
+    "hash": "sha1-60f8b58e32a753b81a7aa94f7ca520075513bd6b",
+    "other": "Stint"
+  },
+  "settings.chatNotFound": {
+    "hash": "sha1-55cea0f4a84605fba71499a968ff7dcf3d5ab951",
+    "other": "Could not read chat information"
+  },
+  "settings.couldNotChangeNotificationStatus": {
+    "hash": "sha1-5703bb517177ecc823b5abd663a44778fead902f",
+    "other": "Could not change notification status"
+  },
+  "settings.couldNotReadNotifications": {
+    "hash": "sha1-a90be159507a4b5954a57f130849a6bd5ae2650f",
+    "other": "Could not read notifications for user"
+  },
+  "settings.notifications": {
+    "hash": "sha1-6543c520ce01d153f90de66d136889473ce8f5dd",
+    "other": "Notification status\n(Only notifies the first session)"
+  },
+  "settings.userNotFound": {
+    "hash": "sha1-bdcf5933f4edce2e2234dd673147232d1a4c71e5",
+    "other": "Could not read user"
+  },
+  "stint.car": {
+    "hash": "sha1-bc47a3dce0c7627010946f0a17b5ec88707f2b34",
+    "other": "Car"
+  },
+  "stint.chooseDriverFromList": {
+    "hash": "sha1-8ce0eb073ac079f47be3e0e452146882a912fb24",
+    "other": "Choose the driver from the list:"
+  },
+  "stint.class": {
+    "hash": "sha1-41ff354b2b330bd1f8a0587675e43cb32a731f33",
+    "other": "Class"
+  },
+  "stint.couldNotReadCarImage": {
+    "hash": "sha1-b42ae64f8bf58477575afdd9170e548c114fd9ab",
+    "other": "Could not read the image of the car %s: %v"
+  },
+  "stint.driver": {
+    "hash": "sha1-b5c7d8b545ea7fdba609234ce2324aa0c0d6dbb0",
+    "other": "Driver"
+  },
+  "stint.noDataForDriver": {
+    "hash": "sha1-95b70584ece49dcf233812f53916686f645899ef",
+    "other": "No data for driver %s"
+  },
+  "stint.noDriversInSession": {
+    "hash": "sha1-7d5c28ad08a83a5a9a6d72d59cd97b18ad2814bb",
+    "other": "There are no drivers in the session"
+  },
+  "stint.noLapsInSession": {
+    "hash": "sha1-0d44cc92273cd94be0b2d8ee10df9a70c159ad54",
+    "other": "There are no laps in the session"
+  },
+  "stint.sessionData": {
+    "hash": "sha1-898099d983a20703d9a36d40c4d3e97308f6fcb5",
+    "other": "```\nTime left: %s\nData for %s in %q\n\n%s```"
+  },
+  "stint.timeoutDownloadingCarImage": {
+    "hash": "sha1-b877cb4d8e40c1e50fc90363a00c456902eecdd3",
+    "other": "The waiting time for downloading the car image for %s has expired"
+  }
+}

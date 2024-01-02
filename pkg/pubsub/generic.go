@@ -27,8 +27,6 @@ func (ps *PubSub[T]) Publish(topic string, data T) {
 	ps.mu.Lock()
 	defer ps.mu.Unlock()
 	for _, ch := range ps.subs[topic] {
-		// fmt.Printf("Publishing to %s\n", topic)
 		ch <- data
-		// fmt.Printf("Published to %s\n", topic)
 	}
 }
